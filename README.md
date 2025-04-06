@@ -12,7 +12,7 @@
 
 - **Real-time Clock**: Displays the current time in ASCII art.
 - **Custom Fonts**: Choose from various fonts provided by **pyfiglet**.
-- **Color Customization**: Adjust the text and background colors with built-in support for **termcolor**.
+- **Color Customization & Gradients**: Adjust the text with gradients.
 - **Cross-Platform**: Works on whatever runs Python.
 - **Persistent Configuration**: Your custom settings are saved in a config file, and you can easily adjust them at any time.
 
@@ -28,6 +28,7 @@ Clone the repository and run the Python script (after installing dependencies):
 ```bash
 git clone https://github.com/judeeey/neoclock.git
 cd neoclock
+pip install -r requirements.txt
 python3 neoclock.py
 ```
 
@@ -48,18 +49,18 @@ When running neoclock for the first time, you will be prompted to create a confi
 
 ```ini
 neoclock_font: <font_name>
-neoclock_foreground_color: <color_name>
-neoclock_background_color: <color_name>
+neoclock_color1: <color_name>
+neoclock_color2: <color_name>
 ```
 
-You can change these settings at any time by manually editing the file or using the `--font`, `--color`, and `--bg` flags when launching neoclock.
+You can change these settings at any time by manually editing the file or using the `--font`, `--color1`, `--color2` and `--bg` flags when launching neoclock.
 
 ### Example:
 
 ```ini
 neoclock_font: slant
-neoclock_foreground_color: green
-neoclock_background_color: on_black
+neoclock_color1: orange
+neoclock_color2: yellow
 ```
 
 ---
@@ -78,25 +79,25 @@ python neoclock.py
 
 ### 2. **Available Commands:**
 
-- `-c`, `--color`: Set the text color (e.g., `red`, `green`, `blue`).
-- `-f`, `--font`: Set the font (e.g., `slant`, `block`, `big`).
-- `--bg`: Set the background color (e.g., `on_blue`, `on_yellow`).
+- `-c1`, `--color1`: Set the start color of the gradient.
+- `-c2`, `--color2`: Set the end color of the gradient.
+- `-f`, `--font`: Set the font of the figlet.
 - `--list-fonts`: List all available fonts.
 - `-i`, `--info`: Display neoclock version, release date, author, and GitHub page.
 - `-rc`, `--reset-conifg`: Reset current configuration file, get prompted to set up like the first launch
 
 ### Examples:
 
-- Start neoclock with the `slant` font and red text:
+- Start neoclock with the saved config:
 
     ```bash
-    python neoclock.py -f slant -c red
+    python neoclock.py
     ```
 
-- Start neoclock with a custom background color:
+- Start neoclock with a blue-magenta gradient and slant font:
 
     ```bash
-    python neoclock.py --bg on_blue
+    python neoclock.py -c1 blue -c2 magenta -f slant
     ```
 
 - Show the version and author info:
@@ -112,13 +113,12 @@ python neoclock.py
 **neoclock** depends on the following Python libraries:
 
 - **pyfiglet**: Used to generate ASCII art for the clock.
-- **termcolor**: Adds color to the clock display.
-- **colorama**: Add emoji/color support for some terminals.
+- **colorama**: Add color support & emoji support to the terminal, aditionally supplying gradients.
 
 You can install them via `pip`:
 
 ```bash
-pip install pyfiglet termcolor colorama
+pip install pyfiglet colorama
 ```
 or with:
 ```bash
