@@ -9,7 +9,7 @@
 #   $$/   $$/  $$$$$$$/  $$$$$$/   $$$$$$$/ $$/  $$$$$$/   $$$$$$$/ $$/   $$/ 
 #                                                                             
 #                                                                           
-# Neoclock 1.0.0
+# neoclock 1.0.0
 # Made by judeeey, published under the GNU GPL 3.0 license
 # https://github.com/judeeey/neoclock                                          
 
