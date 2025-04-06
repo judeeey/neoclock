@@ -9,7 +9,7 @@
 #   $$/   $$/  $$$$$$$/  $$$$$$/   $$$$$$$/ $$/  $$$$$$/   $$$$$$$/ $$/   $$/ 
 #                                                                             
 #                                                                           
-# neoclock 1.1.0
+# neoclock 1.0.1
 # Made by judeeey, published under the GNU GPL 3.0 license
 # https://github.com/judeeey/neoclock                                          
 
@@ -26,7 +26,7 @@ import colorama
 
 colorama.init()
 
-VERSION = "1.1.0"
+VERSION = "1.0.1"
 RELEASE_DATE = "06/04/2025"
 
 COLOR_MAP = {
@@ -53,8 +53,8 @@ def get_config_path():
 def read_config(path):
     config = {
         "neoclock_font": "standard",
-        "color1": "white",
-        "color2": "white",
+        "color1": "yellow",
+        "color2": "orange",
     }
     if not path.exists():
         return None
@@ -70,8 +70,8 @@ def create_default_config(path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         f.write("neoclock_font: standard\n")
-        f.write("color1: red\n")
-        f.write("color2: blue\n")
+        f.write("neoclock_color1: yellow\n")
+        f.write("neoclock_color2: orange\n")
 
 def prompt_for_config(path):
     print("🚀 Welcome to neoclock! Let's create your config.")
@@ -82,17 +82,16 @@ def prompt_for_config(path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         f.write(f"neoclock_font: {font}\n")
-        f.write(f"color1: {color1}\n")
-        f.write(f"color2: {color2}\n")
+        f.write(f"neoclock_color1: {color1}\n")
+        f.write(f"neoclock_color2: {color2}\n")
     print("✅ Config saved. Launching neoclock...")
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_gradient_colors(start_color, end_color, steps):
-    """Generate a list of gradient colors between start and end."""
-    start_rgb = COLOR_MAP.get(start_color.lower(), (0, 0, 0))  # Default to black if color not found
-    end_rgb = COLOR_MAP.get(end_color.lower(), (255, 255, 255))  # Default to white if color not found
+    start_rgb = COLOR_MAP.get(start_color.lower(), (0, 0, 0))
+    end_rgb = COLOR_MAP.get(end_color.lower(), (255, 255, 255))
 
     gradient = []
     for step in range(steps):
@@ -168,8 +167,8 @@ def main():
     config = read_config(config_path)
 
     font = args.font or config["neoclock_font"]
-    color1 = args.color1 or config["color1"]
-    color2 = args.color2 or config["color2"]
+    color1 = args.color1 or config["neoclock_color1"]
+    color2 = args.color2 or config["neoclock_color2"]
 
     display_clock(color1=color1, color2=color2, font=font)
 
