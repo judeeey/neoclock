@@ -44,7 +44,6 @@ def read_config(path):
         "neoclock_foreground_color": "",
         "neoclock_background_color": ""
     }
-
     if not path.exists():
         return None
 
@@ -79,25 +78,29 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def display_clock(color=None, font="standard", bgcolor=None):
-    while True:
-        clear_screen()
-        current_time = datetime.now().strftime("%H:%M:%S")
-        try:
-            ascii_banner = pyfiglet.figlet_format(current_time, font=font)
-        except pyfiglet.FontNotFound:
-            print(f"⚠️ Font '{font}' not found. Using 'standard'.")
-            ascii_banner = pyfiglet.figlet_format(current_time)
-
-        if color:
+    try:
+        while True:
+            clear_screen()
+            current_time = datetime.now().strftime("%H:%M:%S")
             try:
-                print(colored(ascii_banner, color=color, on_color=bgcolor))
-            except KeyError:
-                print(f"⚠️ Invalid color '{color}' or '{bgcolor}'. Falling back.")
-                print(ascii_banner)
-        else:
-            print(ascii_banner)
+                ascii_banner = pyfiglet.figlet_format(current_time, font=font)
+            except pyfiglet.FontNotFound:
+                print(f"⚠️ Font '{font}' not found. Using 'standard'.")
+                ascii_banner = pyfiglet.figlet_format(current_time)
 
-        time.sleep(1)
+            if color:
+                try:
+                    print(colored(ascii_banner, color=color, on_color=bgcolor))
+                except KeyError:
+                    print(f"⚠️ Invalid color '{color}' or '{bgcolor}'. Falling back.")
+                    print(ascii_banner)
+            else:
+                print(ascii_banner)
+
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n⏹️  Exiting neoclock. Have a great day!")
+        sys.exit(0)
 
 def main():
     if is_root():
@@ -110,6 +113,7 @@ def main():
     parser.add_argument('--bg', type=str, help="Background color (e.g., on_blue)")
     parser.add_argument('--list-fonts', action='store_true', help="List available pyfiglet fonts")
     parser.add_argument('-i', '--info', action='store_true', help="Show neoclock version info")
+    parser.add_argument('-rc', '--reset-config', action='store_true', help="Reset the configuration to default")
 
     args = parser.parse_args()
 
@@ -127,6 +131,9 @@ def main():
 
     if not config_path.exists():
         prompt_for_config(config_path)
+
+    if args.reset_config:
+            prompt_for_config(config_path)
 
     config = read_config(config_path)
 
