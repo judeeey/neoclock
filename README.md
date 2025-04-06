@@ -83,6 +83,7 @@ python neoclock.py
 - `--bg`: Set the background color (e.g., `on_blue`, `on_yellow`).
 - `--list-fonts`: List all available fonts.
 - `-i`, `--info`: Display neoclock version, release date, author, and GitHub page.
+- `-rc`, `--reset-conifg`: Reset current configuration file, get prompted to set up like the first launch
 
 ### Examples:
 
