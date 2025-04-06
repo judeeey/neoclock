@@ -9,7 +9,7 @@
 #   $$/   $$/  $$$$$$$/  $$$$$$/   $$$$$$$/ $$/  $$$$$$/   $$$$$$$/ $$/   $$/ 
 #                                                                             
 #                                                                           
-# neoclock 1.0.1
+# neoclock 1.1.0
 # Made by judeeey, published under the GNU GPL 3.0 license
 # https://github.com/judeeey/neoclock                                          
 
@@ -19,14 +19,13 @@ import time
 import argparse
 from datetime import datetime
 import pyfiglet
-from termcolor import colored
 from pathlib import Path
 import platform
 import colorama
 
 colorama.init()
 
-VERSION = "1.0.1"
+VERSION = "1.1.0"
 RELEASE_DATE = "06/04/2025"
 
 COLOR_MAP = {
@@ -53,8 +52,8 @@ def get_config_path():
 def read_config(path):
     config = {
         "neoclock_font": "standard",
-        "color1": "yellow",
-        "color2": "orange",
+        "neoclock_color1": "yellow",
+        "neoclock_color2": "orange",
     }
     if not path.exists():
         return None
