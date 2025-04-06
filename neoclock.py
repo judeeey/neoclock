@@ -9,7 +9,7 @@
 #   $$/   $$/  $$$$$$$/  $$$$$$/   $$$$$$$/ $$/  $$$$$$/   $$$$$$$/ $$/   $$/ 
 #                                                                             
 #                                                                           
-# neoclock 1.0.0
+# neoclock 1.1.0
 # Made by judeeey, published under the GNU GPL 3.0 license
 # https://github.com/judeeey/neoclock                                          
 
@@ -26,8 +26,20 @@ import colorama
 
 colorama.init()
 
-VERSION = "1.0.1"
+VERSION = "1.1.0"
 RELEASE_DATE = "06/04/2025"
+
+COLOR_MAP = {
+    "black": (0, 0, 0),
+    "red": (255, 0, 0),
+    "green": (0, 255, 0),
+    "yellow": (255, 255, 0),
+    "blue": (0, 0, 255),
+    "magenta": (255, 0, 255),
+    "cyan": (0, 255, 255),
+    "white": (255, 255, 255),
+    "gray": (169, 169, 169),
+}
 
 def is_root():
     return os.geteuid() == 0 if hasattr(os, "geteuid") else os.name == 'nt' and 'SUDO_USER' in os.environ
@@ -41,8 +53,8 @@ def get_config_path():
 def read_config(path):
     config = {
         "neoclock_font": "standard",
-        "neoclock_foreground_color": "",
-        "neoclock_background_color": ""
+        "color1": "white",
+        "color2": "white",
     }
     if not path.exists():
         return None
@@ -58,42 +70,64 @@ def create_default_config(path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         f.write("neoclock_font: standard\n")
-        f.write("neoclock_foreground_color: \n")
-        f.write("neoclock_background_color: \n")
+        f.write("color1: red\n")
+        f.write("color2: blue\n")
 
 def prompt_for_config(path):
     print("🚀 Welcome to neoclock! Let's create your config.")
     font = input("Choose font (default = standard): ") or "standard"
-    fg = input("Text color (e.g., red, green, blank for default): ")
-    bg = input("Background color (e.g., on_blue, on_yellow, blank for none): ")
+    color1 = input("Start color for gradient (e.g., red): ") or "red"
+    color2 = input("End color for gradient (e.g., blue): ") or "blue"
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         f.write(f"neoclock_font: {font}\n")
-        f.write(f"neoclock_foreground_color: {fg}\n")
-        f.write(f"neoclock_background_color: {bg}\n")
+        f.write(f"color1: {color1}\n")
+        f.write(f"color2: {color2}\n")
     print("✅ Config saved. Launching neoclock...")
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def display_clock(color=None, font="standard", bgcolor=None):
+def get_gradient_colors(start_color, end_color, steps):
+    """Generate a list of gradient colors between start and end."""
+    start_rgb = COLOR_MAP.get(start_color.lower(), (0, 0, 0))  # Default to black if color not found
+    end_rgb = COLOR_MAP.get(end_color.lower(), (255, 255, 255))  # Default to white if color not found
+
+    gradient = []
+    for step in range(steps):
+        r = int(start_rgb[0] + (end_rgb[0] - start_rgb[0]) * (step / (steps - 1)))
+        g = int(start_rgb[1] + (end_rgb[1] - start_rgb[1]) * (step / (steps - 1)))
+        b = int(start_rgb[2] + (end_rgb[2] - start_rgb[2]) * (step / (steps - 1)))
+        gradient.append(f"\033[38;2;{r};{g};{b}m")
+    
+    return gradient
+
+def apply_gradient_to_ascii(ascii_art, start_color, end_color):
+    lines = ascii_art.split('\n')
+    gradient = get_gradient_colors(start_color, end_color, len(lines))
+
+    colored_lines = []
+    for i, line in enumerate(lines):
+        colored_line = f"{gradient[i]}{line}"
+        colored_lines.append(colored_line)
+
+    return "\n".join(colored_lines)
+
+def display_clock(color1=None, color2=None, font="standard"):
     try:
         while True:
             clear_screen()
-            current_time = datetime.now().strftime("%H:%M:%S")
+            current_time = datetime.now().strftime("%H : %M : %S")
             try:
                 ascii_banner = pyfiglet.figlet_format(current_time, font=font)
             except pyfiglet.FontNotFound:
                 print(f"⚠️ Font '{font}' not found. Using 'standard'.")
                 ascii_banner = pyfiglet.figlet_format(current_time)
 
-            if color:
-                try:
-                    print(colored(ascii_banner, color=color, on_color=bgcolor))
-                except KeyError:
-                    print(f"⚠️ Invalid color '{color}' or '{bgcolor}'. Falling back.")
-                    print(ascii_banner)
+            if color1 and color2:
+                gradient_ascii = apply_gradient_to_ascii(ascii_banner, color1, color2)
+                print(gradient_ascii)
             else:
                 print(ascii_banner)
 
@@ -103,14 +137,10 @@ def display_clock(color=None, font="standard", bgcolor=None):
         sys.exit(0)
 
 def main():
-    if is_root():
-        print("❌ neoclock does not support running as root. Exiting.")
-        sys.exit(1)
-
     parser = argparse.ArgumentParser(description="neoclock — your terminal timepiece in style.")
-    parser.add_argument('-c', '--color', type=str, help="Text color (e.g., red, green, blue)")
+    parser.add_argument('-c1', '--color1', type=str, help="Start color of the gradient")
+    parser.add_argument('-c2', '--color2', type=str, help="End color of the gradient")
     parser.add_argument('-f', '--font', type=str, help="Font for ASCII clock")
-    parser.add_argument('--bg', type=str, help="Background color (e.g., on_blue)")
     parser.add_argument('--list-fonts', action='store_true', help="List available pyfiglet fonts")
     parser.add_argument('-i', '--info', action='store_true', help="Show neoclock version info")
     parser.add_argument('-rc', '--reset-config', action='store_true', help="Reset the configuration to default")
@@ -133,15 +163,15 @@ def main():
         prompt_for_config(config_path)
 
     if args.reset_config:
-            prompt_for_config(config_path)
+        prompt_for_config(config_path)
 
     config = read_config(config_path)
 
     font = args.font or config["neoclock_font"]
-    color = args.color or config["neoclock_foreground_color"]
-    bgcolor = args.bg or config["neoclock_background_color"]
+    color1 = args.color1 or config["color1"]
+    color2 = args.color2 or config["color2"]
 
-    display_clock(color=color, font=font, bgcolor=bgcolor if bgcolor else None)
+    display_clock(color1=color1, color2=color2, font=font)
 
 if __name__ == "__main__":
     main()
