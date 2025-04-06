@@ -1,6 +1,6 @@
-## NeoClock
+## neoclock
 
-**NeoClock** is a stylish ASCII art terminal clock using **pyfiglet** and **termcolor**. It allows you to view the current time in a beautifully formatted ASCII style with customizable fonts, colors, and configurations.
+**neoclock** is a stylish ASCII art terminal clock using **pyfiglet** and **termcolor**. It allows you to view the current time in a beautifully formatted ASCII style with customizable fonts, colors, and configurations.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## 📜 Installation
 
-You can install **Neoclock** from source.
+You can install **neoclock** from source.
 
 ### **From Source**
 Clone the repository and run the Python script (after installing dependencies):
@@ -33,14 +33,14 @@ python3 neoclock.py
 
 ### Config File Location
 
-NeoClock uses a configuration file to store your preferences. The configuration file contains settings for the font, text color, and background color of the clock.
+neoclock uses a configuration file to store your preferences. The configuration file contains settings for the font, text color, and background color of the clock.
 
 - **Linux**: `~/.config/neoclock/neoclock.conf`
 - **Windows**: `%APPDATA%/neoclock/neoclock.conf`
 
 ### Default Configuration
 
-When running NeoClock for the first time, you will be prompted to create a config file. Here's the structure of the configuration file:
+When running neoclock for the first time, you will be prompted to create a config file. Here's the structure of the configuration file:
 
 ```ini
 neoclock_font: <font_name>
@@ -48,7 +48,7 @@ neoclock_foreground_color: <color_name>
 neoclock_background_color: <color_name>
 ```
 
-You can change these settings at any time by manually editing the file or using the `--font`, `--color`, and `--bg` flags when launching NeoClock.
+You can change these settings at any time by manually editing the file or using the `--font`, `--color`, and `--bg` flags when launching neoclock.
 
 ### Example:
 
@@ -78,17 +78,17 @@ python neoclock.py
 - `-f`, `--font`: Set the font (e.g., `slant`, `block`, `big`).
 - `--bg`: Set the background color (e.g., `on_blue`, `on_yellow`).
 - `--list-fonts`: List all available fonts.
-- `-i`, `--info`: Display NeoClock version, release date, author, and GitHub page.
+- `-i`, `--info`: Display neoclock version, release date, author, and GitHub page.
 
 ### Examples:
 
-- Start Neoclock with the `slant` font and red text:
+- Start neoclock with the `slant` font and red text:
 
     ```bash
     python neoclock.py -f slant -c red
     ```
 
-- Start Neoclock with a custom background color:
+- Start neoclock with a custom background color:
 
     ```bash
     python neoclock.py --bg on_blue
@@ -104,7 +104,7 @@ python neoclock.py
 
 ## 💾 Dependencies
 
-**NeoClock** depends on the following Python libraries:
+**neoclock** depends on the following Python libraries:
 
 - **pyfiglet**: Used to generate ASCII art for the clock.
 - **termcolor**: Adds color to the clock display.
@@ -124,13 +124,13 @@ pip install -r requirements.txt
 
 ## 🛑 Restrictions
 
-**NeoClock** cannot be run as root (`sudo`). This is for security reasons and to avoid potential misconfigurations. If you attempt to run it with `sudo`, it will exit with an error message.
+**neoclock** cannot be run as root (`sudo`). This is for security reasons and to avoid potential misconfigurations. If you attempt to run it with `sudo`, it will exit with an error message.
 
 ---
 
 ## 🛠️ Development
 
-If you'd like to contribute to **Neoclock**, follow these steps:
+If you'd like to contribute to **neoclock**, follow these steps:
 
 1. Fork the repository on GitHub.
 2. Clone your fork locally:
@@ -148,7 +148,7 @@ If you'd like to contribute to **Neoclock**, follow these steps:
 
 ## 🤖 Author
 
-**Neoclock** is developed and maintained by **[judeeey](https://judey.net)**.
+**neoclock** is developed and maintained by **[judeeey](https://judey.net)**.
 
 ---
 
