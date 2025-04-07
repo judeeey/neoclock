@@ -2,6 +2,13 @@
     <img src="./neoclock.png" width="128" height="128" alt="neoclock logo"/>
 </p>
 
+<p align="center">
+    <img src="/media/media1.png" width="473" height="129" alt="media"/>
+    <img src="/media/media2.png" width="473" height="129" alt="media"/>
+    <img src="/media/media3.png" width="278" height="103" alt="media"/>
+    <img src="/media/media4.png" width="278" height="103" alt="media"/>
+</p>
+
 ## neoclock
 
 **neoclock** is a stylish ASCII art terminal clock using **pyfiglet** and **termcolor**. It allows you to view the current time in a beautifully formatted ASCII style with customizable fonts, colors, and configurations.
